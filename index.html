@@ -111,7 +111,7 @@
 
 <script>
 /* El vocabulario está en vocab.js y el mapa de audios en audio-map.js */
-const APP_VERSION = "3.2";
+const APP_VERSION = "3.3";
 const GROW_STEP = 10; // palabras que se añaden a una sección al verlas todas
 if (typeof AUDIO_MAP === "undefined") window.AUDIO_MAP = {};
 
@@ -244,20 +244,57 @@ document.addEventListener("visibilitychange", ()=>{
   try{ document.hidden ? keepCtx.suspend() : keepCtx.resume(); }catch(e){}
 });
 function cleanText(text){ return text.replace(/\(.*?\)/g,"").replace(/ \/ /g,", ").replace(/[—–]/g,",").replace(/\s+/g," ").trim(); }
+/* ---------- Reproducción de los audios grabados ----------
+   En el ordenador el audio se descarga y decodifica entero en memoria y se reproduce por el
+   canal de sonido que ya está abierto (keepCtx): así empieza siempre desde el primer instante.
+   En iPhone/iPad se usa el reproductor normal (allí ya funcionaba bien y respeta el modo silencio). */
+const bufCache = new Map(); let curSrc = null, playTok = 0, elemRouted = false;
+function audioURL(file){ return file.startsWith("data:") ? file : "audio/"+file; }
+function getBuffer(file){
+  if (bufCache.has(file)) return bufCache.get(file);
+  const pr = fetch(audioURL(file)).then(r=>r.arrayBuffer())
+    .then(ab => new Promise((res, rej) => keepCtx.decodeAudioData(ab, res, rej)));
+  bufCache.set(file, pr); pr.catch(()=>bufCache.delete(file));
+  if (bufCache.size > 80) bufCache.delete(bufCache.keys().next().value);
+  return pr;
+}
+function prefetchAudio(texts){
+  if (!keepCtx || IS_IOS || S.settings.audio !== "rec") return;
+  texts.forEach(t => { if (!t) return; const f = AUDIO_MAP[cleanText(t)]; if (f) getBuffer(f).catch(()=>{}); });
+}
+function stopAudio(){
+  playTok++;
+  try{ player.pause(); }catch(e){}
+  if (curSrc){ try{ curSrc.stop(); }catch(e){} curSrc = null; }
+}
+function playElement(file, rate, clean, rateOverride){
+  if (keepCtx && !IS_IOS && !elemRouted){
+    try{ keepCtx.createMediaElementSource(player).connect(keepCtx.destination); elemRouted = true; }catch(e){}
+  }
+  player.src = audioURL(file);
+  player.playbackRate = rate; player.preservesPitch = true; player.webkitPreservesPitch = true;
+  const p = player.play(); if (p && p.catch) p.catch(()=>speakTTS(clean, rateOverride));
+}
 function speak(text, rateOverride){
   const clean = cleanText(text);
   const file = AUDIO_MAP[clean];
   if (file && S.settings.audio === "rec"){
-    try{
-      speechSynthesis && speechSynthesis.cancel && speechSynthesis.cancel();
-      player.pause(); player.src = file.startsWith("data:") ? file : "audio/"+file;
-      player.playbackRate = Math.min(1.15, (rateOverride || S.settings.rate || 0.85) / 0.85);
-      player.preservesPitch = true; player.webkitPreservesPitch = true;
-      // si el sonido se acaba de activar, espera a que el altavoz esté listo
-      const wait = keepCtx ? Math.max(0, 700 - (Date.now() - keepStarted)) : 0;
-      setTimeout(()=>{ const p = player.play(); if (p && p.catch) p.catch(()=>speakTTS(clean, rateOverride)); }, wait);
+    try{ speechSynthesis && speechSynthesis.cancel && speechSynthesis.cancel(); }catch(e){}
+    stopAudio();
+    const rate = Math.min(1.15, (rateOverride || S.settings.rate || 0.85) / 0.85);
+    if (!keepCtx) keepAudioAwake();
+    if (keepCtx && !IS_IOS && Math.abs(rate - 1) < 0.01){
+      const tok = playTok;
+      getBuffer(file).then(buf => {
+        if (tok !== playTok) return;                       // se pulsó otro audio entretanto
+        if (keepCtx.state !== "running") keepCtx.resume();
+        const src = keepCtx.createBufferSource(); src.buffer = buf; src.connect(keepCtx.destination);
+        const warm = Math.max(0, 0.7 - (Date.now() - keepStarted) / 1000); // canal recién abierto
+        src.start(keepCtx.currentTime + warm + 0.05); curSrc = src;
+      }).catch(() => playElement(file, rate, clean, rateOverride));
       return;
-    }catch(e){}
+    }
+    try{ playElement(file, rate, clean, rateOverride); return; }catch(e){}
   }
   speakTTS(clean, rateOverride);
 }
@@ -395,7 +432,8 @@ function cardDir(c){
 
 function renderCard(){
   if (qi >= Q.length){ return renderDone(); }
-  const c = Q[qi]; const dir = cardDir(c); const p = S.progress[c.id];
+  const c = Q[qi];
+  prefetchAudio([c.it, c.exIt, Q[qi+1] && Q[qi+1].it, Q[qi+1] && Q[qi+1].exIt]); const dir = cardDir(c); const p = S.progress[c.id];
   const front = dir==="it-es" ? c.it : c.es;
   const back = dir==="it-es" ? c.es : c.it;
   const secName = (SECTIONS.find(s=>s.id===c.sec)||{name:c.sec}).name;
@@ -503,6 +541,7 @@ function delCustom(i){ const c=S.custom[i]; delete S.progress[c.id]; S.custom.sp
    ========================================================= */
 
 function renderPron(){
+  prefetchAudio(PRON.flatMap(g=>g.items.flatMap(it=>it.ex.map(e=>e[0].replace("→",", ")))));
   $("#app").innerHTML = `
     <header><h1>🗣️ Pronunciación</h1><button class="icon-btn" onclick="renderHome()">✕</button></header>
     <p class="note" style="margin-top:0">Toca 🔊 para escuchar cada ejemplo. En mayúsculas tienes la sílaba tónica. Las letras de la guía se leen como en español.</p>
