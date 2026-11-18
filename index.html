@@ -111,7 +111,7 @@
 
 <script>
 /* El vocabulario está en vocab.js y el mapa de audios en audio-map.js */
-const APP_VERSION = "3.1";
+const APP_VERSION = "3.2";
 const GROW_STEP = 10; // palabras que se añaden a una sección al verlas todas
 if (typeof AUDIO_MAP === "undefined") window.AUDIO_MAP = {};
 
@@ -219,6 +219,30 @@ function currentVoice(){
   return itVoices.find(v=>v.voiceURI===want) || itVoices[0] || null;
 }
 const player = new Audio(); player.preload = "auto";
+/* Mantiene despierta la salida de sonido del ordenador (Windows y algunos auriculares la
+   "duermen" tras unos segundos de silencio y se come el principio de cada audio).
+   Emite una señal inaudible mientras la app está visible. No se usa en iPhone/iPad. */
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+let keepCtx = null, keepStarted = 0;
+function keepAudioAwake(){
+  if (IS_IOS) return;
+  try{
+    if (!keepCtx){
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      keepCtx = new AC();
+      const osc = keepCtx.createOscillator(), g = keepCtx.createGain();
+      osc.frequency.value = 20; g.gain.value = 0.0005;   // 20 Hz casi sin volumen: no se oye
+      osc.connect(g).connect(keepCtx.destination); osc.start();
+      keepStarted = Date.now();
+    }
+    if (keepCtx.state === "suspended"){ keepCtx.resume(); keepStarted = Date.now(); }
+  }catch(e){}
+}
+["pointerdown","keydown","touchstart"].forEach(ev => document.addEventListener(ev, keepAudioAwake, {capture:true, passive:true}));
+document.addEventListener("visibilitychange", ()=>{
+  if (!keepCtx) return;
+  try{ document.hidden ? keepCtx.suspend() : keepCtx.resume(); }catch(e){}
+});
 function cleanText(text){ return text.replace(/\(.*?\)/g,"").replace(/ \/ /g,", ").replace(/[—–]/g,",").replace(/\s+/g," ").trim(); }
 function speak(text, rateOverride){
   const clean = cleanText(text);
@@ -229,7 +253,9 @@ function speak(text, rateOverride){
       player.pause(); player.src = file.startsWith("data:") ? file : "audio/"+file;
       player.playbackRate = Math.min(1.15, (rateOverride || S.settings.rate || 0.85) / 0.85);
       player.preservesPitch = true; player.webkitPreservesPitch = true;
-      const p = player.play(); if (p && p.catch) p.catch(()=>speakTTS(clean, rateOverride));
+      // si el sonido se acaba de activar, espera a que el altavoz esté listo
+      const wait = keepCtx ? Math.max(0, 700 - (Date.now() - keepStarted)) : 0;
+      setTimeout(()=>{ const p = player.play(); if (p && p.catch) p.catch(()=>speakTTS(clean, rateOverride)); }, wait);
       return;
     }catch(e){}
   }
