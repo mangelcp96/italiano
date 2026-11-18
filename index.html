@@ -111,7 +111,8 @@
 
 <script>
 /* El vocabulario está en vocab.js y el mapa de audios en audio-map.js */
-const APP_VERSION = "2.0";
+const APP_VERSION = "3.0";
+const GROW_STEP = 10; // palabras que se añaden a una sección al verlas todas
 if (typeof AUDIO_MAP === "undefined") window.AUDIO_MAP = {};
 
 /* =========================================================
@@ -134,17 +135,24 @@ function save(){
 }
 let S = load();
 S.progress ||= {}; S.custom ||= []; S.settings ||= {dir:"it-es", newPerSession:10};
-S.settings.rate ||= 0.85; S.streak ||= {last:null,count:0}; S.unlocked ||= 0;
+S.settings.rate ||= 0.85; S.streak ||= {last:null,count:0}; S.visible ||= {};
 if (!S.settings.v){ S.settings.newPerSession = 20; S.settings.v = 2; }
 if (S.settings.audio === undefined) S.settings.audio = "rec"; // rec = audio grabado
 let SECTIONS = [];
-function refreshSections(){ SECTIONS = BASE_SECTIONS.concat(FUTURE_LESSONS.filter(l=>l.lesson<=S.unlocked)); }
+function visibleCount(s){ return Math.min(s.cards.length, S.visible[s.id] || s.start); }
+function refreshSections(){ SECTIONS = BASE_SECTIONS.map(s => ({...s, total:s.cards.length, cards:s.cards.slice(0, visibleCount(s))})); }
 refreshSections();
-function nextLesson(){ return FUTURE_LESSONS.find(l=>l.lesson===S.unlocked+1) || null; }
-function unlockNext(){
-  const l = nextLesson(); if (!l) return;
-  S.unlocked = l.lesson; save(); refreshSections();
-  toast("Lección desbloqueada: "+l.name); renderHome();
+/* Cuando ya has visto todas las palabras visibles de una sección, se le añaden GROW_STEP más */
+function growSections(){
+  const grown = [];
+  BASE_SECTIONS.forEach(s=>{
+    const n = visibleCount(s); if (n >= s.cards.length) return;
+    const anyNew = s.cards.slice(0, n).some(c => !S.progress[s.id+":"+c[0]]);
+    if (!anyNew){ S.visible[s.id] = Math.min(s.cards.length, n + GROW_STEP); grown.push(s); }
+  });
+  if (grown.length){ save(); refreshSections();
+    toast(grown.length===1 ? `+${GROW_STEP} palabras nuevas en ${grown[0].name}` : `+${GROW_STEP} palabras nuevas en ${grown.length} secciones`); }
+  return grown;
 }
 
 function allCards(){
@@ -249,11 +257,12 @@ function speakTTS(clean, rateOverride){
    PANTALLA DE INICIO
    ========================================================= */
 function renderHome(){
+  growSections();
   const now = Date.now(), all = allCards();
   const due = all.filter(c=>isDue(c,now)).length;
   const learned = all.filter(c=>!isNew(c)).length;
   const mastered = all.filter(isMastered).length;
-  const secs = SECTIONS.map(s => ({id:s.id,name:s.name,icon:s.icon}));
+  const secs = SECTIONS.map(s => ({id:s.id,name:s.name,icon:s.icon,total:s.total}));
   const customSecs = [...new Set(S.custom.map(c=>c.sec))].filter(id=>!secs.find(s=>s.id===id));
   customSecs.forEach(id => secs.push({id, name:id, icon:"📝"}));
 
@@ -284,13 +293,6 @@ function renderHome(){
         <span style="margin-left:auto;color:var(--muted)">›</span>
       </div>
     </div>
-    ${(()=>{ const nl = nextLesson(); if (!nl) return "";
-      const left = allCards().filter(isNew).length;
-      return left===0 ? `<div class="sec unlock"><div class="sec-top"><div class="sec-ico">🎉</div>
-        <div><div class="sec-name">¡Has visto todas las palabras!</div>
-        <div class="sec-meta">Ya puedes desbloquear la lección ${nl.lesson}: ${esc(nl.name)} (${nl.cards.length} palabras)</div></div></div>
-        <div class="sec-btns" style="margin-top:10px"><button class="go" onclick="unlockNext()">${nl.icon} Desbloquear lección</button></div></div>` : "";
-    })()}
     ${secs.map(s=>{
       const cs = cardsOf(s.id); const d = cs.filter(c=>isDue(c,now)).length;
       const m = cs.filter(isMastered).length; const seen = cs.filter(c=>!isNew(c)).length;
@@ -299,7 +301,7 @@ function renderHome(){
         <div class="sec-top">
           <div class="sec-ico">${s.icon}</div>
           <div><div class="sec-name">${esc(s.name)}</div>
-          <div class="sec-meta">${cs.length} palabras · ${seen} vistas · ${m} dominadas</div></div>
+          <div class="sec-meta">${seen} vistas · ${m} dominadas · ${cs.length}${s.total>cs.length?` de ${s.total}`:""} desbloqueadas</div></div>
           ${d?`<span class="due-pill">${d} por repasar</span>`:""}
         </div>
         <div class="bar"><div style="width:${pct}%"></div></div>
@@ -309,10 +311,7 @@ function renderHome(){
         </div>
       </div>`;
     }).join("")}
-    ${FUTURE_LESSONS.filter(l=>l.lesson>S.unlocked).map(l=>`<div class="sec locked"><div class="sec-top">
-      <div class="sec-ico">🔒</div><div><div class="sec-name">Lección ${l.lesson}: ${esc(l.name)}</div>
-      <div class="sec-meta">${l.lesson===S.unlocked+1 ? `Se desbloquea al ver todas las palabras actuales (te quedan ${allCards().filter(isNew).length})` : "Se desbloquea después de la anterior"}</div></div></div></div>`).join("")}
-    <p class="note">Tu progreso se guarda en este dispositivo y funciona sin conexión. «Estudiar» sigue la repetición espaciada (te muestra lo que toca hoy + palabras nuevas). «Repaso libre» repasa toda la sección sin afectar tu calendario.</p>
+    <p class="note">Tu progreso se guarda en este dispositivo y funciona sin conexión. «Estudiar» sigue la repetición espaciada (te muestra lo que toca hoy + palabras nuevas). Cuando has visto todas las palabras de una sección, se le añaden ${GROW_STEP} nuevas solas. «Repaso libre» te da 20 tarjetas, sobre todo las que más te cuestan, sin cambiar tu calendario.</p>
   `;
 }
 
@@ -321,10 +320,29 @@ function renderHome(){
    ========================================================= */
 let Q = [], qi = 0, flipped = false, free = false, sessTotal = 0, sessSec = "all", answered = 0;
 
+/* Peso para el repaso libre: las que fallas y las poco aprendidas salen mucho; las dominadas, muy poco */
+function difficulty(c){
+  const p = S.progress[c.id]; if (!p) return 0;
+  const byBox = [6, 8, 5, 3, 1.5, 0.4, 0.15][Math.min(p.box, 6)];
+  return byBox * (1 + Math.min(p.lapses||0, 6) * 0.5);
+}
+function weightedPick(cs, n){
+  const pool = cs.filter(c=>difficulty(c)>0), out = [];
+  while (out.length < n && pool.length){
+    const tot = pool.reduce((a,c)=>a+difficulty(c), 0); let r = Math.random()*tot, i = 0;
+    for (; i < pool.length-1; i++){ r -= difficulty(pool[i]); if (r <= 0) break; }
+    out.push(pool.splice(i,1)[0]);
+  }
+  return out;
+}
 function startSession(secId, freeMode=false){
+  if (!freeMode) growSections();
   const now = Date.now(); const cs = cardsOf(secId);
   free = freeMode; sessSec = secId;
-  if (free){ Q = shuffle(cs); }
+  if (free){
+    Q = weightedPick(cs, 20);
+    if (!Q.length) return toast("Primero estudia algunas palabras de esta sección con «Estudiar»");
+  }
   else {
     const due = shuffle(cs.filter(c=>isDue(c,now)));
     const nw = shuffle(cs.filter(isNew)).slice(0, S.settings.newPerSession);
@@ -386,9 +404,10 @@ function flip(){ if (!flipped){ flipped = true; renderCard(); } }
 
 function answer(q){
   const c = Q[qi]; const now = Date.now();
+  if (free && q===0 && S.progress[c.id]){ const p = S.progress[c.id]; p.lapses = (p.lapses||0)+1; save(); }
   if (!free){
     const p = S.progress[c.id] || {box:0, due:now, seen:0};
-    if (q===0){ p.box = 1; }
+    if (q===0){ p.box = 1; if (p.seen) p.lapses = (p.lapses||0)+1; }
     else if (q===1){ p.box = Math.min(6, Math.max(2, p.box+1)); }
     else { p.box = Math.min(6, Math.max(3, p.box+2)); }
     p.due = now + INTERVALS[p.box]*DAY; p.seen = (p.seen||0)+1;
