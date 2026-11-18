@@ -1,0 +1,377 @@
+/* VOCABULARIO — [italiano, español, ejemplo IT, ejemplo ES] */
+const BASE_SECTIONS = [
+ {id:"verbos", name:"Verbos frecuentes", icon:"🏃", cards:[
+  ["essere","ser / estar","Io sono spagnolo.","Yo soy español."],
+  ["avere","tener / haber","Ho due fratelli.","Tengo dos hermanos."],
+  ["fare","hacer","Che cosa fai stasera?","¿Qué haces esta noche?"],
+  ["andare","ir","Vado al lavoro in autobus.","Voy al trabajo en autobús."],
+  ["venire","venir","Vieni con me?","¿Vienes conmigo?"],
+  ["stare","estar / quedarse","Come stai?","¿Cómo estás?"],
+  ["dire","decir","Dimmi la verità.","Dime la verdad."],
+  ["potere","poder","Posso entrare?","¿Puedo entrar?"],
+  ["volere","querer","Voglio un caffè.","Quiero un café."],
+  ["dovere","deber / tener que","Devo studiare.","Tengo que estudiar."],
+  ["sapere","saber","Non so la risposta.","No sé la respuesta."],
+  ["vedere","ver","Ci vediamo domani!","¡Nos vemos mañana!"],
+  ["parlare","hablar","Parli italiano?","¿Hablas italiano?"],
+  ["mangiare","comer","Mangiamo alle otto.","Comemos a las ocho."],
+  ["bere","beber","Bevo molta acqua.","Bebo mucha agua."],
+  ["dormire","dormir","Dormo otto ore.","Duermo ocho horas."],
+  ["capire","entender","Non capisco.","No entiendo."],
+  ["prendere","tomar / coger","Prendo il treno.","Cojo el tren."],
+  ["lavorare","trabajar","Lavoro in un ufficio.","Trabajo en una oficina."],
+  ["abitare","vivir (residir)","Abito a Roma.","Vivo en Roma."],
+  ["chiamarsi","llamarse","Mi chiamo Luca.","Me llamo Luca."],
+  ["uscire","salir","Esco con gli amici.","Salgo con los amigos."],
+  ["comprare","comprar","Compro il pane.","Compro el pan."],
+  ["cercare","buscar","Cerco le chiavi.","Busco las llaves."]
+ ]},
+ {id:"hogar", name:"Hogar", icon:"🏠", cards:[
+  ["la casa","la casa","La mia casa è piccola.","Mi casa es pequeña."],
+  ["la cucina","la cocina","Sono in cucina.","Estoy en la cocina."],
+  ["il bagno","el baño","Il bagno è a destra.","El baño está a la derecha."],
+  ["la camera da letto","el dormitorio","La camera da letto è grande.","El dormitorio es grande."],
+  ["il soggiorno","el salón","Guardiamo la TV in soggiorno.","Vemos la tele en el salón."],
+  ["il letto","la cama","Vado a letto.","Me voy a la cama."],
+  ["il tavolo","la mesa","Il libro è sul tavolo.","El libro está en la mesa."],
+  ["la sedia","la silla","Prendi una sedia.","Coge una silla."],
+  ["la finestra","la ventana","Apri la finestra, per favore.","Abre la ventana, por favor."],
+  ["la porta","la puerta","Chiudi la porta.","Cierra la puerta."],
+  ["il frigorifero","el frigorífico","Il latte è nel frigorifero.","La leche está en el frigorífico."],
+  ["il divano","el sofá","Il gatto dorme sul divano.","El gato duerme en el sofá."],
+  ["la chiave","la llave","Dov'è la chiave?","¿Dónde está la llave?"],
+  ["le scale","las escaleras","Salgo le scale.","Subo las escaleras."],
+  ["lo specchio","el espejo","Mi guardo allo specchio.","Me miro en el espejo."],
+  ["la doccia","la ducha","Faccio la doccia.","Me ducho."],
+  ["il piatto","el plato","Lavo i piatti.","Lavo los platos."],
+  ["il bicchiere","el vaso","Un bicchiere d'acqua.","Un vaso de agua."],
+  ["la forchetta","el tenedor","Mi serve una forchetta.","Necesito un tenedor."],
+  ["il cucchiaio","la cuchara","Mangio la zuppa con il cucchiaio.","Como la sopa con la cuchara."],
+  ["il coltello","el cuchillo","Il coltello è nel cassetto.","El cuchillo está en el cajón."]
+ ]},
+ {id:"comida", name:"Comida y bebida", icon:"🍝", cards:[
+  ["il pane","el pan","Il pane è fresco.","El pan está fresco."],
+  ["l'acqua","el agua","Vorrei dell'acqua.","Querría agua."],
+  ["il vino","el vino","Un bicchiere di vino rosso.","Una copa de vino tinto."],
+  ["la birra","la cerveza","Una birra, per favore.","Una cerveza, por favor."],
+  ["la carne","la carne","Non mangio carne.","No como carne."],
+  ["il pesce","el pescado","Il pesce è buonissimo.","El pescado está buenísimo."],
+  ["il formaggio","el queso","Mi piace il formaggio.","Me gusta el queso."],
+  ["la frutta","la fruta","Mangio frutta ogni giorno.","Como fruta cada día."],
+  ["la verdura","la verdura","La verdura fa bene.","La verdura es buena para la salud."],
+  ["la mela","la manzana","Una mela al giorno.","Una manzana al día."],
+  ["il pomodoro","el tomate","Pasta al pomodoro.","Pasta con tomate."],
+  ["l'uovo (le uova)","el huevo (los huevos)","Compro sei uova.","Compro seis huevos."],
+  ["il latte","la leche","Caffè con latte.","Café con leche."],
+  ["lo zucchero","el azúcar","Senza zucchero, grazie.","Sin azúcar, gracias."],
+  ["il sale","la sal","Mi passi il sale?","¿Me pasas la sal?"],
+  ["la colazione","el desayuno","Faccio colazione alle sette.","Desayuno a las siete."],
+  ["il pranzo","la comida (almuerzo)","Il pranzo è pronto!","¡La comida está lista!"],
+  ["la cena","la cena","Ceniamo insieme?","¿Cenamos juntos?"],
+  ["il conto","la cuenta","Il conto, per favore.","La cuenta, por favor."],
+  ["il gelato","el helado","Un gelato al cioccolato.","Un helado de chocolate."]
+ ]},
+ {id:"familia", name:"Familia y personas", icon:"👨‍👩‍👧", cards:[
+  ["la madre / la mamma","la madre / mamá","Mia madre è medico.","Mi madre es médica."],
+  ["il padre / il papà","el padre / papá","Mio padre cucina bene.","Mi padre cocina bien."],
+  ["i genitori","los padres","I miei genitori abitano a Milano.","Mis padres viven en Milán."],
+  ["il fratello","el hermano","Ho un fratello più grande.","Tengo un hermano mayor."],
+  ["la sorella","la hermana","Mia sorella si chiama Anna.","Mi hermana se llama Anna."],
+  ["il figlio","el hijo","Hanno un figlio.","Tienen un hijo."],
+  ["la figlia","la hija","La figlia studia medicina.","La hija estudia medicina."],
+  ["il nonno","el abuelo","Il nonno ha ottant'anni.","El abuelo tiene ochenta años."],
+  ["la nonna","la abuela","La nonna fa la pasta.","La abuela hace la pasta."],
+  ["il marito","el marido","Suo marito è italiano.","Su marido es italiano."],
+  ["la moglie","la esposa","Mia moglie lavora qui.","Mi esposa trabaja aquí."],
+  ["lo zio / la zia","el tío / la tía","Mia zia abita a Napoli.","Mi tía vive en Nápoles."],
+  ["il cugino / la cugina","el primo / la prima","Ho tanti cugini.","Tengo muchos primos."],
+  ["l'amico / l'amica","el amigo / la amiga","Lui è il mio migliore amico.","Él es mi mejor amigo."],
+  ["il ragazzo / la ragazza","el chico / la chica (novio/a)","La mia ragazza è francese.","Mi novia es francesa."],
+  ["il bambino / la bambina","el niño / la niña","Il bambino gioca.","El niño juega."],
+  ["la gente","la gente","C'è molta gente.","Hay mucha gente."]
+ ]},
+ {id:"tiempo", name:"Tiempo y días", icon:"📅", cards:[
+  ["oggi","hoy","Oggi fa caldo.","Hoy hace calor."],
+  ["domani","mañana","A domani!","¡Hasta mañana!"],
+  ["ieri","ayer","Ieri sono andato al cinema.","Ayer fui al cine."],
+  ["adesso / ora","ahora","Adesso non posso.","Ahora no puedo."],
+  ["la mattina","la mañana","Studio la mattina.","Estudio por la mañana."],
+  ["il pomeriggio","la tarde","Ci vediamo nel pomeriggio.","Nos vemos por la tarde."],
+  ["la sera","la tarde-noche","Stasera esco.","Esta noche salgo."],
+  ["la notte","la noche","Buona notte!","¡Buenas noches!"],
+  ["la settimana","la semana","La settimana prossima.","La semana que viene."],
+  ["il mese","el mes","Un mese di vacanza.","Un mes de vacaciones."],
+  ["l'anno","el año","Buon anno!","¡Feliz año!"],
+  ["lunedì","lunes","Lunedì lavoro.","El lunes trabajo."],
+  ["martedì","martes","Martedì ho lezione.","El martes tengo clase."],
+  ["mercoledì","miércoles","Ci vediamo mercoledì.","Nos vemos el miércoles."],
+  ["giovedì","jueves","Giovedì vado in palestra.","El jueves voy al gimnasio."],
+  ["venerdì","viernes","Venerdì sera usciamo.","El viernes por la noche salimos."],
+  ["sabato","sábado","Sabato dormo tanto.","El sábado duermo mucho."],
+  ["domenica","domingo","La domenica pranziamo dai nonni.","Los domingos comemos con los abuelos."],
+  ["sempre","siempre","Arrivi sempre tardi.","Siempre llegas tarde."],
+  ["mai","nunca","Non bevo mai caffè.","Nunca bebo café."],
+  ["presto","pronto / temprano","Mi alzo presto.","Me levanto temprano."],
+  ["tardi","tarde","È tardi!","¡Es tarde!"]
+ ]},
+ {id:"ciudad", name:"Ciudad y transporte", icon:"🚉", cards:[
+  ["la strada","la calle","Attraversa la strada.","Cruza la calle."],
+  ["la piazza","la plaza","Ci vediamo in piazza.","Nos vemos en la plaza."],
+  ["la stazione","la estación","Dov'è la stazione?","¿Dónde está la estación?"],
+  ["il treno","el tren","Il treno è in ritardo.","El tren lleva retraso."],
+  ["l'autobus","el autobús","Prendo l'autobus.","Cojo el autobús."],
+  ["la macchina","el coche","Ho una macchina rossa.","Tengo un coche rojo."],
+  ["l'aereo","el avión","Viaggio in aereo.","Viajo en avión."],
+  ["il biglietto","el billete / la entrada","Due biglietti, per favore.","Dos billetes, por favor."],
+  ["la fermata","la parada","La fermata è qui vicino.","La parada está aquí cerca."],
+  ["il negozio","la tienda","Il negozio chiude alle otto.","La tienda cierra a las ocho."],
+  ["il supermercato","el supermercado","Vado al supermercato.","Voy al supermercado."],
+  ["la farmacia","la farmacia","C'è una farmacia qui?","¿Hay una farmacia aquí?"],
+  ["l'ospedale","el hospital","L'ospedale è lontano.","El hospital está lejos."],
+  ["il ponte","el puente","Il ponte è molto antico.","El puente es muy antiguo."],
+  ["a destra","a la derecha","Gira a destra.","Gira a la derecha."],
+  ["a sinistra","a la izquierda","La banca è a sinistra.","El banco está a la izquierda."],
+  ["dritto","recto","Vai sempre dritto.","Sigue todo recto."],
+  ["vicino","cerca","Abito qui vicino.","Vivo aquí cerca."],
+  ["lontano","lejos","È lontano da qui?","¿Está lejos de aquí?"]
+ ]},
+ {id:"adjetivos", name:"Adjetivos frecuentes", icon:"✨", cards:[
+  ["grande","grande","Una casa grande.","Una casa grande."],
+  ["piccolo","pequeño","Un cane piccolo.","Un perro pequeño."],
+  ["buono","bueno (sabor/calidad)","Questa pizza è buona.","Esta pizza está buena."],
+  ["cattivo","malo","Un odore cattivo.","Un olor malo."],
+  ["bello","bonito / guapo","Che bella giornata!","¡Qué día tan bonito!"],
+  ["brutto","feo","Fa brutto tempo.","Hace mal tiempo."],
+  ["nuovo","nuevo","Ho un telefono nuovo.","Tengo un teléfono nuevo."],
+  ["vecchio","viejo","Una macchina vecchia.","Un coche viejo."],
+  ["caldo","caliente / calor","Il caffè è caldo.","El café está caliente."],
+  ["freddo","frío","Ho freddo.","Tengo frío."],
+  ["facile","fácil","L'esercizio è facile.","El ejercicio es fácil."],
+  ["difficile","difícil","L'italiano non è difficile.","El italiano no es difícil."],
+  ["caro","caro","Questo ristorante è caro.","Este restaurante es caro."],
+  ["economico","barato","Un albergo economico.","Un hotel barato."],
+  ["felice","feliz","Sono molto felice.","Estoy muy feliz."],
+  ["stanco","cansado","Sono stanco morto.","Estoy muerto de cansancio."],
+  ["lungo","largo (longitud)","Un viaggio lungo.","Un viaje largo."],
+  ["corto","corto","Ha i capelli corti.","Tiene el pelo corto."],
+  ["giovane","joven","È ancora giovane.","Todavía es joven."],
+  ["veloce","rápido","Il treno è veloce.","El tren es rápido."]
+ ]},
+ {id:"expresiones", name:"Expresiones útiles", icon:"💬", cards:[
+  ["Ciao!","¡Hola! / ¡Adiós!","Ciao, come va?","Hola, ¿qué tal?"],
+  ["Buongiorno","Buenos días","Buongiorno, signora!","¡Buenos días, señora!"],
+  ["Buonasera","Buenas tardes / noches","Buonasera a tutti.","Buenas tardes a todos."],
+  ["Arrivederci","Adiós / Hasta luego","Arrivederci e grazie!","¡Adiós y gracias!"],
+  ["Per favore","Por favor","Un caffè, per favore.","Un café, por favor."],
+  ["Grazie","Gracias","Grazie mille!","¡Muchas gracias!"],
+  ["Prego","De nada / Adelante","— Grazie! — Prego.","— ¡Gracias! — De nada."],
+  ["Scusi / Scusa","Disculpe / Perdona","Scusi, dov'è il museo?","Disculpe, ¿dónde está el museo?"],
+  ["Mi dispiace","Lo siento","Mi dispiace, non lo so.","Lo siento, no lo sé."],
+  ["Non capisco","No entiendo","Scusi, non capisco.","Perdone, no entiendo."],
+  ["Può ripetere?","¿Puede repetir?","Può ripetere, per favore?","¿Puede repetir, por favor?"],
+  ["Quanto costa?","¿Cuánto cuesta?","Quanto costa questo?","¿Cuánto cuesta esto?"],
+  ["Dov'è...?","¿Dónde está...?","Dov'è il bagno?","¿Dónde está el baño?"],
+  ["Come ti chiami?","¿Cómo te llamas?","Come ti chiami? — Mi chiamo Sara.","¿Cómo te llamas? — Me llamo Sara."],
+  ["Piacere!","¡Encantado/a!","Piacere, io sono Marco.","Encantado, yo soy Marco."],
+  ["Va bene","Vale / Está bien","Alle otto? Va bene.","¿A las ocho? Vale."],
+  ["Che ore sono?","¿Qué hora es?","Che ore sono? Sono le tre.","¿Qué hora es? Son las tres."],
+  ["Più lentamente","Más despacio","Parli più lentamente, per favore.","Hable más despacio, por favor."],
+  ["A presto!","¡Hasta pronto!","Ciao, a presto!","¡Adiós, hasta pronto!"],
+  ["Mi piace...","Me gusta...","Mi piace molto l'Italia.","Me gusta mucho Italia."]
+ ]}
+];
+
+/* Lecciones futuras: se desbloquean de una en una al terminar las palabras disponibles */
+const FUTURE_LESSONS = [
+ {id:"viajes", lesson:1, name:"Viajes y aeropuerto", icon:"✈️", cards:[
+  ["il viaggio","el viaje","Buon viaggio!","¡Buen viaje!"],
+  ["la valigia","la maleta","La mia valigia è pesante.","Mi maleta pesa mucho."],
+  ["il passaporto","el pasaporte","Ho dimenticato il passaporto.","He olvidado el pasaporte."],
+  ["il volo","el vuelo","Il volo parte alle dieci.","El vuelo sale a las diez."],
+  ["l'uscita","la puerta de embarque / la salida","Qual è l'uscita per Roma?","¿Cuál es la puerta para Roma?"],
+  ["la carta d'imbarco","la tarjeta de embarque","Ecco la mia carta d'imbarco.","Aquí tiene mi tarjeta de embarque."],
+  ["partire","salir (de viaje)","Parto domani mattina.","Salgo mañana por la mañana."],
+  ["arrivare","llegar","A che ora arriviamo?","¿A qué hora llegamos?"],
+  ["il ritardo","el retraso","Il volo ha un'ora di ritardo.","El vuelo tiene una hora de retraso."],
+  ["l'albergo","el hotel","L'albergo è vicino alla stazione.","El hotel está cerca de la estación."],
+  ["la camera","la habitación","Una camera doppia, per favore.","Una habitación doble, por favor."],
+  ["prenotare","reservar","Ho prenotato due notti.","He reservado dos noches."],
+  ["il bagaglio","el equipaje","Il bagaglio a mano.","El equipaje de mano."],
+  ["la dogana","la aduana","Passiamo la dogana.","Pasamos la aduana."],
+  ["il taxi","el taxi","Prendiamo un taxi?","¿Cogemos un taxi?"],
+  ["la mappa","el mapa","Hai una mappa della città?","¿Tienes un mapa de la ciudad?"],
+  ["le vacanze","las vacaciones","Sono in vacanza.","Estoy de vacaciones."],
+  ["andata e ritorno","ida y vuelta","Un biglietto di andata e ritorno.","Un billete de ida y vuelta."],
+  ["la spiaggia","la playa","Andiamo in spiaggia!","¡Vamos a la playa!"],
+  ["il museo","el museo","Il museo è chiuso il lunedì.","El museo cierra los lunes."]
+ ]},
+ {id:"restaurante", lesson:2, name:"Restaurante y bar", icon:"🍷", cards:[
+  ["il ristorante","el restaurante","Conosci un buon ristorante?","¿Conoces un buen restaurante?"],
+  ["il cameriere","el camarero","Scusi, cameriere!","¡Perdone, camarero!"],
+  ["il menù","la carta / el menú","Posso vedere il menù?","¿Puedo ver la carta?"],
+  ["ordinare","pedir (en un restaurante)","Siamo pronti per ordinare.","Estamos listos para pedir."],
+  ["vorrei","querría / me gustaría","Vorrei una pizza margherita.","Querría una pizza margarita."],
+  ["l'antipasto","el entrante","Prendiamo un antipasto?","¿Pedimos un entrante?"],
+  ["il primo","el primer plato","Come primo, la pasta.","De primero, la pasta."],
+  ["il secondo","el segundo plato","Come secondo, il pesce.","De segundo, el pescado."],
+  ["il contorno","la guarnición","Un contorno di patate.","Una guarnición de patatas."],
+  ["il dolce","el postre","Cosa c'è per dolce?","¿Qué hay de postre?"],
+  ["la bottiglia","la botella","Una bottiglia d'acqua.","Una botella de agua."],
+  ["frizzante / naturale","con gas / sin gas","Acqua frizzante o naturale?","¿Agua con gas o sin gas?"],
+  ["un tavolo per due","una mesa para dos","Un tavolo per due, per favore.","Una mesa para dos, por favor."],
+  ["la mancia","la propina","Lasciamo la mancia?","¿Dejamos propina?"],
+  ["il cornetto","el cruasán","Un cappuccino e un cornetto.","Un capuchino y un cruasán."],
+  ["squisito","delicioso","È squisito!","¡Está delicioso!"],
+  ["piccante","picante","Questo piatto è piccante?","¿Este plato pica?"],
+  ["vegetariano","vegetariano","Sono vegetariano.","Soy vegetariano."],
+  ["Buon appetito!","¡Que aproveche!","Buon appetito a tutti!","¡Que aproveche a todos!"],
+  ["Cin cin!","¡Salud! (al brindar)","Alla salute! Cin cin!","¡A tu salud! ¡Chinchín!"]
+ ]},
+ {id:"ropa", lesson:3, name:"Ropa y compras", icon:"👕", cards:[
+  ["i vestiti","la ropa","Compro vestiti nuovi.","Compro ropa nueva."],
+  ["la maglietta","la camiseta","Una maglietta bianca.","Una camiseta blanca."],
+  ["la camicia","la camisa","Questa camicia è elegante.","Esta camisa es elegante."],
+  ["i pantaloni","los pantalones","I pantaloni sono troppo lunghi.","Los pantalones son demasiado largos."],
+  ["la gonna","la falda","Una gonna rossa.","Una falda roja."],
+  ["il vestito","el vestido / el traje","Che bel vestito!","¡Qué vestido tan bonito!"],
+  ["le scarpe","los zapatos","Queste scarpe sono comode.","Estos zapatos son cómodos."],
+  ["la giacca","la chaqueta","Porta la giacca, fa freddo.","Llévate la chaqueta, hace frío."],
+  ["il cappotto","el abrigo","Un cappotto per l'inverno.","Un abrigo para el invierno."],
+  ["la taglia","la talla","Che taglia porti?","¿Qué talla usas?"],
+  ["provare","probar(se)","Posso provarla?","¿Puedo probármela?"],
+  ["il camerino","el probador","Dov'è il camerino?","¿Dónde está el probador?"],
+  ["lo sconto","el descuento","C'è uno sconto?","¿Hay descuento?"],
+  ["i saldi","las rebajas","A gennaio ci sono i saldi.","En enero hay rebajas."],
+  ["pagare","pagar","Posso pagare con la carta?","¿Puedo pagar con tarjeta?"],
+  ["i soldi","el dinero","Non ho soldi.","No tengo dinero."],
+  ["lo scontrino","el tique / el recibo","Vuole lo scontrino?","¿Quiere el tique?"],
+  ["la borsa","el bolso / la bolsa","Mi serve una borsa.","Necesito una bolsa."],
+  ["il colore","el color","Di che colore è?","¿De qué color es?"],
+  ["nero / bianco","negro / blanco","Una giacca nera.","Una chaqueta negra."]
+ ]},
+ {id:"salud", lesson:4, name:"Cuerpo y salud", icon:"🩺", cards:[
+  ["la testa","la cabeza","Ho mal di testa.","Me duele la cabeza."],
+  ["gli occhi","los ojos","Ha gli occhi azzurri.","Tiene los ojos azules."],
+  ["la bocca","la boca","Apri la bocca.","Abre la boca."],
+  ["il naso","la nariz","Ho il naso chiuso.","Tengo la nariz tapada."],
+  ["l'orecchio","la oreja / el oído","Mi fa male l'orecchio.","Me duele el oído."],
+  ["il braccio","el brazo (pl. le braccia)","Mi sono rotto il braccio.","Me he roto el brazo."],
+  ["la mano","la mano (pl. le mani)","Lavati le mani.","Lávate las manos."],
+  ["la gamba","la pierna","Mi fa male la gamba.","Me duele la pierna."],
+  ["il piede","el pie","Vado a piedi.","Voy a pie."],
+  ["la schiena","la espalda","Ho mal di schiena.","Me duele la espalda."],
+  ["lo stomaco","el estómago","Ho mal di stomaco.","Me duele el estómago."],
+  ["il medico","el médico","Devo andare dal medico.","Tengo que ir al médico."],
+  ["la medicina","la medicina","Prendi la medicina.","Tómate la medicina."],
+  ["la febbre","la fiebre","Ho la febbre.","Tengo fiebre."],
+  ["il raffreddore","el resfriado","Ho il raffreddore.","Estoy resfriado."],
+  ["malato","enfermo","Oggi sono malato.","Hoy estoy enfermo."],
+  ["Mi fa male...","Me duele...","Mi fa male qui.","Me duele aquí."],
+  ["Aiuto!","¡Socorro! / ¡Ayuda!","Aiuto! Chiamate un medico!","¡Socorro! ¡Llamen a un médico!"],
+  ["la salute","la salud","La salute è importante.","La salud es importante."],
+  ["riposare","descansar","Devi riposare.","Tienes que descansar."]
+ ]},
+ {id:"trabajo", lesson:5, name:"Trabajo y estudios", icon:"💼", cards:[
+  ["il lavoro","el trabajo","Che lavoro fai?","¿A qué te dedicas?"],
+  ["l'ufficio","la oficina","Sono in ufficio.","Estoy en la oficina."],
+  ["il collega","el compañero de trabajo","È un mio collega.","Es un compañero de trabajo."],
+  ["il capo","el jefe","Il mio capo è simpatico.","Mi jefe es simpático."],
+  ["la riunione","la reunión","Ho una riunione alle tre.","Tengo una reunión a las tres."],
+  ["il computer","el ordenador","Il computer non funziona.","El ordenador no funciona."],
+  ["l'email","el correo electrónico","Ti mando un'email.","Te mando un correo."],
+  ["il progetto","el proyecto","Abbiamo un progetto nuovo.","Tenemos un proyecto nuevo."],
+  ["lo stipendio","el sueldo","Lo stipendio arriva a fine mese.","El sueldo llega a final de mes."],
+  ["la scuola","la escuela / el colegio","I bambini vanno a scuola.","Los niños van al colegio."],
+  ["l'università","la universidad","Studio all'università.","Estudio en la universidad."],
+  ["lo studente","el estudiante","Sono uno studente.","Soy estudiante."],
+  ["l'insegnante","el profesor / la profesora","L'insegnante è molto brava.","La profesora es muy buena."],
+  ["la lezione","la clase / la lección","La lezione inizia alle nove.","La clase empieza a las nueve."],
+  ["l'esame","el examen","Domani ho un esame.","Mañana tengo un examen."],
+  ["il libro","el libro","Leggo un libro.","Leo un libro."],
+  ["la penna","el bolígrafo","Hai una penna?","¿Tienes un bolígrafo?"],
+  ["studiare","estudiar","Studio italiano ogni giorno.","Estudio italiano cada día."],
+  ["imparare","aprender","Voglio imparare l'italiano.","Quiero aprender italiano."],
+  ["scrivere","escribir","Scrivo una lettera.","Escribo una carta."]
+ ]},
+ {id:"naturaleza", lesson:6, name:"Tiempo y naturaleza", icon:"🌤️", cards:[
+  ["il tempo","el tiempo (clima)","Che tempo fa?","¿Qué tiempo hace?"],
+  ["il sole","el sol","Oggi c'è il sole.","Hoy hace sol."],
+  ["la pioggia","la lluvia","Non mi piace la pioggia.","No me gusta la lluvia."],
+  ["piove","llueve","Oggi piove.","Hoy llueve."],
+  ["la neve","la nieve","In montagna c'è la neve.","En la montaña hay nieve."],
+  ["il vento","el viento","C'è molto vento.","Hace mucho viento."],
+  ["la nuvola","la nube","Il cielo è pieno di nuvole.","El cielo está lleno de nubes."],
+  ["il cielo","el cielo","Il cielo è azzurro.","El cielo es azul."],
+  ["fa caldo / fa freddo","hace calor / hace frío","Oggi fa molto caldo.","Hoy hace mucho calor."],
+  ["l'ombrello","el paraguas","Prendi l'ombrello!","¡Coge el paraguas!"],
+  ["la primavera","la primavera","In primavera ci sono tanti fiori.","En primavera hay muchas flores."],
+  ["l'estate","el verano","D'estate vado al mare.","En verano voy a la playa."],
+  ["l'autunno","el otoño","L'autunno è la mia stagione preferita.","El otoño es mi estación favorita."],
+  ["l'inverno","el invierno","L'inverno è freddo.","El invierno es frío."],
+  ["il mare","el mar","Il mare è calmo.","El mar está en calma."],
+  ["la montagna","la montaña","Andiamo in montagna.","Vamos a la montaña."],
+  ["il fiume","el río","Il Tevere è il fiume di Roma.","El Tíber es el río de Roma."],
+  ["l'albero","el árbol","Un albero molto alto.","Un árbol muy alto."],
+  ["il fiore","la flor","Un fiore per te.","Una flor para ti."],
+  ["l'animale","el animal","Ti piacciono gli animali?","¿Te gustan los animales?"]
+ ]}
+];
+
+/* PRONUNCIACIÓN */
+const PRON = [
+ {group:"Lo básico", items:[
+  {t:"Se lee casi como se escribe", d:"Igual que en español, el italiano es muy regular: cada letra suena casi siempre igual. Si aprendes las pocas reglas de abajo, podrás leer cualquier palabra.", ex:[]},
+  {t:"Las vocales: a, e, i, o, u", d:"Suenan como en español, claras y completas. La única diferencia es que la <b>e</b> y la <b>o</b> pueden ser abiertas o cerradas según la palabra. Al principio no te preocupes: si las pronuncias como en español, se te entiende perfectamente.", ex:[
+   ["casa","CA-sa","casa"],["vino","VI-no","vino"],["uno","U-no","uno"],["bene","BE-ne","bien"],["sole","SO-le","sol"]]},
+  {t:"H: siempre muda", d:"Como en español, la <b>h</b> no suena nunca. Solo sirve para cambiar el sonido de c y g (ver abajo) y en algunas formas del verbo <i>avere</i>.", ex:[
+   ["ho","o","tengo"],["hanno","AN-no","tienen"],["hotel","o-TEL","hotel"]]}
+ ]},
+ {group:"C y G: la regla más importante", items:[
+  {t:"C + a, o, u = «k»", d:"Delante de a, o, u la <b>c</b> suena como la c de «casa».", ex:[
+   ["casa","CA-sa","casa"],["cosa","CO-sa","cosa"],["cucina","cu-CHI-na","cocina"]]},
+  {t:"C + e, i = «ch»", d:"Delante de e, i la <b>c</b> suena como la <b>ch</b> de «chico». ¡Nunca como la z española!", ex:[
+   ["cena","CHE-na","cena"],["cinema","CHI-ne-ma","cine"],["dieci","DIE-chi","diez"]]},
+  {t:"CI + vocal = «ch» (la i no suena)", d:"En <b>cia, cio, ciu</b> la i es casi muda: solo indica que la c suena «ch».", ex:[
+   ["ciao","CHAO","hola / adiós"],["cioccolato","chok-ko-LA-to","chocolate"],["camicia","ca-MI-cha","camisa"]]},
+  {t:"CH = «k»", d:"Al revés que en español: <b>ch</b> suena como «k». Se usa delante de e, i para mantener el sonido duro.", ex:[
+   ["chiave","KIA-ve","llave"],["che","KE","que / qué"],["perché","per-KE","por qué / porque"]]},
+  {t:"G + a, o, u = «g» de «gato»", d:"Como en español.", ex:[
+   ["gatto","GAT-to","gato"],["gola","GO-la","garganta"],["gusto","GUS-to","gusto"]]},
+  {t:"G + e, i = «y» suave (como «dj»)", d:"Delante de e, i la <b>g</b> suena como la <b>y</b> argentina suave o la «j» inglesa de <i>John</i>. ¡Nunca como la j española!", ex:[
+   ["gelato","dye-LA-to","helado"],["giro","DYI-ro","vuelta"],["pagina","PA-dyi-na","página"]]},
+  {t:"GI + vocal = «dy» (la i no suena)", d:"En <b>gia, gio, giu</b> la i solo indica el sonido suave.", ex:[
+   ["giallo","DYAL-lo","amarillo"],["giorno","DYOR-no","día"],["giugno","DYU-ño","junio"]]},
+  {t:"GH = «g» de «guerra»", d:"Delante de e, i, <b>gh</b> mantiene el sonido duro, como el «gue/gui» español.", ex:[
+   ["spaghetti","spa-GUET-ti","espaguetis"],["ghiaccio","GUIA-cho","hielo"],["laghi","LA-gui","lagos"]]}
+ ]},
+ {group:"Combinaciones especiales", items:[
+  {t:"GN = «ñ»", d:"Suena exactamente como la <b>ñ</b> española.", ex:[
+   ["bagno","BA-ño","baño"],["gnocchi","ÑOK-ki","ñoquis"],["lasagna","la-SA-ña","lasaña"]]},
+  {t:"GLI = «ll» (palatal)", d:"Suena como la <b>ll</b> tradicional de algunas zonas de España, con la lengua pegada al paladar: algo entre «li» y «ll».", ex:[
+   ["figlio","FI-llo","hijo"],["famiglia","fa-MI-lla","familia"],["aglio","A-llo","ajo"]]},
+  {t:"SC + e, i = «sh»", d:"Suena como «sh» en inglés (como cuando pides silencio: ¡shhh!).", ex:[
+   ["pesce","PE-she","pescado"],["uscire","u-SHI-re","salir"],["sciare","shi-A-re","esquiar"]]},
+  {t:"SC + a, o, u y SCH = «sk»", d:"Delante de a, o, u (o con h) se pronuncian las dos letras: «s» + «k».", ex:[
+   ["scuola","SKUO-la","escuela"],["scarpa","SKAR-pa","zapato"],["schiena","SKIE-na","espalda"]]},
+  {t:"QU = «ku»", d:"La <b>u</b> sí suena, como en «cuando».", ex:[
+   ["quando","KUAN-do","cuándo"],["quattro","KUAT-tro","cuatro"],["acqua","AK-kua","agua"]]}
+ ]},
+ {group:"Consonantes distintas al español", items:[
+  {t:"Z = «ts» o «dz»", d:"La <b>z</b> italiana nunca suena como la z española. Suena «ts» (como en <i>pizza</i>) o «dz» (como en <i>zero</i>). Las dos se entienden; con «ts» casi siempre acertarás.", ex:[
+   ["pizza","PIT-tsa","pizza"],["grazie","GRA-tsie","gracias"],["zero","DZE-ro","cero"],["zucchero","DZUK-ke-ro","azúcar"]]},
+  {t:"S entre vocales = «s» sonora (como un zumbido)", d:"En el norte de Italia la <b>s</b> entre dos vocales suena vibrando, como una abeja «zzz». En el sur suena como en español. Las dos formas son correctas.", ex:[
+   ["casa","CA-sa / CA-za","casa"],["rosa","RO-sa / RO-za","rosa"],["chiesa","KIE-za","iglesia"]]},
+  {t:"V ≠ B", d:"En italiano la <b>v</b> suena como en francés o inglés: el labio inferior toca los dientes de arriba. Es distinta de la b.", ex:[
+   ["vino","VI-no","vino"],["vero","VE-ro","verdadero"],["bevo","BE-vo","bebo"]]},
+  {t:"R = como en español", d:"Una <b>r</b> suena como la r de «pero»; <b>rr</b> suena fuerte, como en «perro».", ex:[
+   ["caro","CA-ro","caro"],["carro","CAR-ro","carro"],["Roma","RO-ma","Roma"]]}
+ ]},
+ {group:"Lo que más delata a un extranjero", items:[
+  {t:"Las consonantes dobles se alargan", d:"Muy importante: una consonante doble se mantiene un instante más (como si hicieras una pausa mínima). ¡Cambia el significado!", ex:[
+   ["pala → palla","PA-la / PAL-la","pala → pelota"],["caro → carro","CA-ro / CAR-ro","caro → carro"],["sete → sette","SE-te / SET-te","sed → siete"],["nono → nonno","NO-no / NON-no","noveno → abuelo"]]},
+  {t:"La sílaba tónica", d:"La mayoría de palabras llevan el acento en la penúltima sílaba. Si la última sílaba es tónica, se escribe con tilde (<i>città, perché, caffè</i>). Pero hay muchas palabras con acento antes que no llevan tilde: apréndelas escuchando.", ex:[
+   ["città","chit-TA","ciudad"],["caffè","caf-FE","café"],["telefono","te-LE-fo-no","teléfono"],["macchina","MAK-ki-na","coche"]]},
+  {t:"La melodía", d:"El italiano «canta» más que el español: las vocales tónicas se alargan un poco y las frases suben y bajan más. Imitar frases completas (no solo palabras) es la mejor forma de cogerlo.", ex:[
+   ["Buongiorno! Come sta?","buon-DYOR-no, CO-me STA","¡Buenos días! ¿Cómo está?"],["Che bello!","ke BEL-lo","¡Qué bonito!"],["Andiamo a mangiare?","an-DIA-mo a man-DYA-re","¿Vamos a comer?"]]}
+ ]}
+];
